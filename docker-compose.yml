@@ -1,0 +1,30 @@
+version: '3.1'
+services:
+  miservicio_php: # Nombre del servicio inventado
+    build: . # Se compilara donde estoy
+    container_name: miphp
+    volumes:
+      - ./miweb/:/var/www/html
+    links: # Enlazar este contenedor a otro
+      - db
+    expose:
+      - 80
+    ports: # Vincular el 80 real al 80 docker
+      - 80:80
+  db: 
+    container_name: misql
+    image: mysql:8.0
+    environment:
+      - MYSQL_DATABASE=insti
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_USER=pablo
+      - MYSQL_PASSWORD=pablo
+    ports:
+      - 3306:3306
+  miservicio_phpmyadmin:
+    container_name: phpmiadmin
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - 8080:80
+    links:
+      - db
